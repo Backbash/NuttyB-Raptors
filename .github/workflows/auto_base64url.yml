@@ -1,0 +1,54 @@
+name: Encode Lua to Base64URL
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  base64encode:
+    name: lua to base64
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Encode Lua files to Base64URL
+      run: |
+        sudo apt install dos2unix
+        sudo npm install -g npm@latest
+        sudo npm install -g https://github.com/mathiasbynens/luamin.git
+        sudo npm install -g base64url@1.0.6
+        mkdir -p encoded_output
+        for dir in lua misc_lua; do
+          mapfile -t files < <(find "$dir" -type f -name '*.lua')
+          for file in "${files[@]}"; do
+            out_file="encoded_output/${file%.lua}.base64url"
+            mkdir -p "$(dirname "$out_file")"
+            awk 'BEGIN{in_block=0}/^--\[\[/{print;in_block=1;next}in_block{print;if($0~/\]\]$/)in_block=0;next}/^--/{print;next}{exit}' "$file" > comments.tmp
+            luamin -f "$file" > minified.tmp
+            cat comments.tmp minified.tmp > final.tmp
+            unix2dos final.tmp
+            sed -i 's/^[ \t]*//; s/[ \t]*$//' final.tmp
+            awk '{ sub(/\r$/, ""); lines[NR]=$0 } END { for (i=1; i<=NR; i++) { printf "%s", lines[i]; if (i < NR) printf "\r\n" } }' final.tmp > .tmp && mv .tmp final.tmp
+            base64url -i final.tmp -o "$out_file"
+            rm -f comments.tmp minified.tmp final.tmp
+          done
+        done
+
+    - name: Push to base64url branch
+      run: |
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        rm -rf base64url
+        git fetch origin base64url || true && (git show-ref --quiet refs/remotes/origin/base64url && git checkout base64url || git switch --orphan base64url)
+        find . -mindepth 1 -maxdepth 1 ! -name '.*' ! -name 'encoded_output' -exec rm -rf {} +
+        echo "base64url repo" > README.md
+        cp -r encoded_output/* . || true
+        rm -rf encoded_output
+        git status --porcelain | grep . && git add . && git commit -m "Generate base64url" && git push -u origin base64url || echo "No change"
