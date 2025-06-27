@@ -187,8 +187,10 @@ return {
 				weaponvelocity = 300,
 				damage = {
 					commanders = 0,
-					default = 20000,
-					raptors = 10000
+					default = 99999,
+					scavboss = 1000,
+					raptors = 10000,
+					raptorqueen = 20000
 				}
 			}
 		},
@@ -345,9 +347,10 @@ return {
 				weaponvelocity = 300,
 				damage = {
 					commanders = 0,
-					default = 20000,
+					default = 99999,
 					scavboss = 1000,
-					raptors = 10000
+					raptors = 10000,
+					raptorqueen = 20000
 				}
 			}
 		},
@@ -501,9 +504,10 @@ return {
 				weaponvelocity = 505,
 				damage = {
 					commanders = 0,
-					default = 20000,
+					default = 99999,
 					scavboss = 1000,
-					raptors = 10000
+					raptors = 10000,
+					raptorqueen = 20000
 				}
 			},
 			corcomeyelaser = {
