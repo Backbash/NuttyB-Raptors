@@ -118,18 +118,6 @@ local miniQueenCommon = {
 }
 
 for f, u in pairs {
-	corcomlvl4 = {
-		weapondefs = {
-			disintegratorxl = {
-				damage = {
-					commanders = 0,
-					default = 99999,
-					scavboss = 1000,
-					raptorqueen = 20000
-				}
-			}
-		}
-	},
 	raptor_miniq_a = tableMerge(miniQueenCommon, {
 		customparams = raptorSquad(70, 80, 'berserk'),
 		weapondefs = {
