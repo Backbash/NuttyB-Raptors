@@ -1,7 +1,29 @@
---Mini-Bosses
+-- Mini-Bosses
 -- Authors: RCore
 -- docs.google.com/spreadsheets/d/1QSVsuAAMhBrhiZdTihVfSCwPzbbZWDLCtXWP23CU0ko
 local unitDefs, tableMerge, tableCopy, raptor_matriarch_basic, customfusionexplo = UnitDefs or {}, table.merge, table.copy, 'raptor_matriarch_basic', 'customfusionexplo'
+
+-- Player scaling setup
+local playerCountScale = 1
+if Spring.Utilities.Gametype.IsRaptors() then
+	playerCountScale = (#Spring.GetTeamList() - 2)/12
+end
+
+local function scaledMax(base)
+	return math.max(1, math.ceil(base * playerCountScale))
+end
+
+-- Queen time scaling (baseline = 1.3) define and scale mqAnger
+local mqAnger = {70, 85, 90, 105, 110, 125}
+local mqTimeMult = math.max(1, Spring.GetModOptions().raptor_queentimemult or 1.3)
+local mqStart, mqLast = mqAnger[1], mqAnger[#mqAnger]
+local mqTargetLast = mqTimeMult * 97
+local mqFactor = (mqTargetLast - mqStart) / (mqLast - mqStart)
+
+for i = 2, #mqAnger do
+    mqAnger[i] = math.floor(mqStart + (mqAnger[i] - mqStart) * mqFactor)
+end
+mqAnger[1] = mqStart
 
 local function newUnit(old, new, data)
 	if unitDefs[old] and not unitDefs[new] then
@@ -111,41 +133,32 @@ end
 local miniQueenCommon = {
 	selfdestructas = customfusionexplo,
 	explodeas = customfusionexplo,
-	maxthisunit = 4,
+	maxthisunit = scaledMax(4),
 	weapondefs = {
 		yellow_missile = { damage = { default = 1, vtol = 1000 } }
 	}
 }
 
 for f, u in pairs {
-	corcomlvl4 = {
-		weapondefs = {
-			disintegratorxl = {
-				damage = {
-					commanders = 0,
-					default = 99999,
-					scavboss = 1000,
-					raptorqueen = 20000
-				}
-			}
-		}
-	},
 	raptor_miniq_a = tableMerge(miniQueenCommon, {
-		customparams = raptorSquad(70, 80, 'berserk'),
+		maxthisunit = scaledMax(4),
+		customparams = raptorSquad(mqAnger[1], mqAnger[2], 'berserk'),
 		weapondefs = {
 			goo = { damage = { default = 750 } },
 			melee = { damage = { default = 4000 } },
 		}
 	}),
 	raptor_miniq_b = tableMerge(miniQueenCommon, {
-		customparams = raptorSquad(85, 95, 'berserk'),
+		maxthisunit = scaledMax(4),
+		customparams = raptorSquad(mqAnger[3], mqAnger[4], 'berserk'),
 		weapondefs = {
 			goo = { damage = { default = 1500 } },
 			melee = { damage = { default = 7000 } },
 		}
 	}),
 	raptor_miniq_c = tableMerge(miniQueenCommon, {
-		customparams = raptorSquad(100, 125, 'berserk'),
+		maxthisunit = scaledMax(4),
+		customparams = raptorSquad(mqAnger[5], mqAnger[6], 'berserk'),
 		weapondefs = {
 			goo = { damage = { default = 3000 } },
 			melee = { damage = { default = 10000 } },
@@ -153,8 +166,8 @@ for f, u in pairs {
 	}),
 	raptor_consort = {
 		explodeas = 'raptor_empdeath_big',
-		maxthisunit = 8,
-		customparams = raptorSquad(85, 1000, 'berserk'),
+		maxthisunit = scaledMax(8),
+		customparams = raptorSquad(mqAnger[2], 1000, 'berserk'),
 		weapondefs = {
 			eyelaser = {
 				range = 800,
@@ -180,8 +193,8 @@ for f, u in pairs {
 		}
 	},
 	raptor_mama_ba = {
-		maxthisunit = 4,
-		customparams = raptorSquad(55, 84, 'berserk'),
+		maxthisunit = scaledMax(4),
+		customparams = raptorSquad(55, mqAnger[3]-1, 'berserk'),
 		weapondefs = {
 			goo = { damage = { default = 750 } },
 			melee = { damage = { default = 750 } }
@@ -189,30 +202,30 @@ for f, u in pairs {
 	},
 	raptor_mama_fi = {
 		explodeas = 'raptor_empdeath_big',
-		maxthisunit = 4,
-		customparams = raptorSquad(55, 84, 'berserk'),
+		maxthisunit = scaledMax(4),
+		customparams = raptorSquad(55, mqAnger[3]-1, 'berserk'),
 		weapondefs = {
 			flamethrowerspike = { damage = { default = 120 } },
 			flamethrowermain = { damage = { default = 240 } }
 		}
 	},
 	raptor_mama_el = {
-		maxthisunit = 4,
-		customparams = raptorSquad(60, 1000, 'berserk')
+		maxthisunit = scaledMax(4),
+		customparams = raptorSquad(65, 1000, 'berserk')
 	},
 	raptor_mama_ac = {
-		maxthisunit = 4,
-		customparams = raptorSquad(65, 1000, 'berserk'),
+		maxthisunit = scaledMax(4),
+		customparams = raptorSquad(60, 1000, 'berserk'),
 		weapondefs = {
 			melee = { damage = { default = 750 } }
 		}
 	},
 	raptor_land_assault_basic_t4_v2 = {
-		maxthisunit = 8,
+		maxthisunit = scaledMax(8),
 		customparams = raptorSquad(33, 50, 'raider')
 	},
 	raptor_land_assault_basic_t4_v1 = {
-		maxthisunit = 16,
+		maxthisunit = scaledMax(16),
 		customparams = raptorSquad(51, 69, 'raider', 'basic', 2)
 	}
 } do
