@@ -1,34 +1,23 @@
---Mini-Bosses v2
+--Mini Bosses v2b
 -- Authors: RCore
 -- docs.google.com/spreadsheets/d/1QSVsuAAMhBrhiZdTihVfSCwPzbbZWDLCtXWP23CU0ko
 local unitDefs, tableMerge, tableCopy, raptor_matriarch_basic, customfusionexplo, spring = UnitDefs or {}, table.merge, table.copy, 'raptor_matriarch_basic', 'customfusionexplo', Spring
 
-local nbQhpMult, nbHpMult = 1.0, 1.0
-do
-	local modOptions = spring.GetModOptions() or {}
+local nbQhpMult, nbHpMult = 1.3, 1.3
 
-	local function findValue(tweakdefName, pattern)
-		local b64 = modOptions[tweakdefName]
-		if b64 and b64 ~= "" then
-			local ok, source = pcall(string.base64Decode, b64)
-			if ok and source then
-				return tonumber(string.match(source, pattern)) or 1.0
-			end
-		end
-		return 1.0
-	end
-
-	nbQhpMult = findValue('tweakdefs1', "(%d+%.?%d*)X QHP")
-	nbHpMult  = findValue('tweakdefs2', "(%d+%.?%d*)X HP")
-end
+nbHpMult = unitDefs[raptor_matriarch_basic].health / 60000
+nbQhpMult = unitDefs['raptor_queen_epic'].health / 1250000
 
 local playerCountScale = 1
 if spring.Utilities.Gametype.IsRaptors() then
 	playerCountScale = (#spring.GetTeamList() - 2)/12
 end
 
+local spawnCountMult = spring.GetModOptions().raptor_spawncountmult or 3
+local totalSpawnScale = playerCountScale * (spawnCountMult / 3)
+
 local function scaledMax(base)
-	return math.max(1, math.ceil(base * playerCountScale))
+	return math.max(1, math.ceil(base * totalSpawnScale))
 end
 
 local mqAnger = {70, 85, 90, 105, 110, 125}
@@ -41,12 +30,12 @@ for i = 2, #mqAnger do
     mqAnger[i] = math.floor(mqStart + (mqAnger[i] - mqStart) * mqFactor)
 end
 
--- Calculate time bonus for Doombringer from the number of queens
 local mqNumQueens = spring.GetModOptions().raptor_queen_count or 1
 local mqDoomAngerScale = 1
 if nbQhpMult > 1.3 then mqDoomAngerScale = math.min(10, nbQhpMult / 1.3 * 0.9) end
-local mqDoomAnger = math.ceil(mqDoomAngerScale * (8 * (1.06 ^ math.max(0, mqNumQueens - 8)))) -- base 8 for 8 + exp 1.06x
-local mqAngerBoss = mqTimeMult * 100 + mqDoomAnger  -- baseline 130% anger for 8 queens is 138%
+local mqDoomAnger = math.ceil(mqDoomAngerScale * (8 * (1.06 ^ math.max(0, mqNumQueens - 8))))
+local mqAngerBoss = mqTimeMult * 100 + mqDoomAnger
+local maxDoombringers = math.max(3, scaledMax(math.floor((21 * mqNumQueens + 36) / 19)))
 
 local function newUnit(old, new, data)
 	if unitDefs[old] and not unitDefs[new] then
@@ -127,6 +116,7 @@ newUnit(
 		icontype = 'corkorg',
 		health = raptor_matriarch_basic_health * 4,
 		mass = 100000,
+		nochasecategory = "MOBILE VTOL OBJECT",
 		sonarstealth = false,
 		stealth = false,
 		speed = 67.5,
@@ -137,7 +127,7 @@ newUnit(
 	}
 )
 
-unitDefs.raptor_consort.weapondefs.melee = tableCopy(unitDefs[raptor_matriarch_basic].weapondefs.melee)
+unitDefs.raptor_consort.weapondefs.goo = tableCopy(unitDefs['raptor_queen_epic'].weapondefs.goo)
 
 newUnit(
 	'raptor_consort',
@@ -153,8 +143,6 @@ newUnit(
 		}		
 	}
 )
-
-unitDefs.raptor_doombringer.weapondefs.melee = tableCopy(unitDefs[raptor_matriarch_basic].weapondefs.melee)
 
 local function raptorSquad(p, q, e, r, s, t)
 	return {
@@ -208,64 +196,73 @@ for f, u in pairs {
 		customparams = raptorSquad(mqAnger[2], 1000, 'berserk'),
 		weapondefs = {
 			eyelaser = {
-				name = 'Laser Eyes',
-				areaofeffect = 16,
-				reloadtime = 2,
+				name = 'Angry Eyes',
+				reloadtime = 3,
 				rgbcolor = '1 0 0.3',
-				range = 800,
-				damage = { default = 6000 }
+				range = 500,
+				damage = { default = 6000, commanders = 6000 }
 			},		
-			melee = {
-				name = 'Aristocratic Beak',
+			goo = {
+				name = 'Snowball Barrage',
 				soundstart = 'pensquawk1',
-				range = 300,
-				reloadtime = 2,
-				damage = { default = 2000 }
+				cegtag = "blob_trail_blue",
+				burst = 8,
+				sprayangle = 2048,
+				weaponvelocity = 600,
+				reloadtime = 4,
+				range = 1000,
+				rgbcolor = "0.7 0.85 1.0",
+				damage = { default = 1000 }
 			}
 		},
 		weapons = {
 			[1] = {
 				def = "eyelaser",
-				badtargetcategory = "VTOL",
+				badtargetcategory = "VTOL OBJECT"
 			},
 			[2] = {
-				def = 'melee',
+				def = 'goo',
 				maindir = '0 0 1',
-				maxangledif = 155
+				maxangledif = 180,
+				badtargetcategory = "VTOL OBJECT"
 			}
 		},
 	},
 	
 	raptor_doombringer = {
 		explodeas = "ScavComBossExplo",
-		maxthisunit = scaledMax(18),
-		customparams = raptorSquad(mqAngerBoss, 1000, 'raider', nil, 3, 99),
+		maxthisunit = maxDoombringers,
+		customparams = raptorSquad(mqAngerBoss, 1000, 'berserk', nil, 1, 99),
 		weapondefs = {
 			eyelaser = {
 				name = 'Eyes of Doom',
-				areaofeffect = 32,
-				reloadtime = 2,
+				reloadtime = 3,
 				rgbcolor = '0.3 1 0',
-				range = 800,			
-				damage = { default = 48000 }
+				range = 500,			
+				damage = { default = 48000, commanders = 24000  }
 			},
-			melee = {
-				name = 'Apocalyptic Beak',
+			goo = {
+				name = 'Amber Hailstorm',
 				soundstart = 'penbray2',
-				range = 300,
-				reloadtime = 2,
-				damage = { default = 48000 }
+				cegtag = "blob_trail_red",
+				burst = 15,
+				sprayangle = 3072,
+				weaponvelocity = 600,
+				reloadtime = 5,
+				rgbcolor = "0.7 0.85 1.0",
+				damage = { default = 5000 }
 			}
 		},
 		weapons = {
 			[1] = {
 				def = "eyelaser",
-				badtargetcategory = "",
+				badtargetcategory = "VTOL OBJECT"
 				},
 			[2] = {
-				def = 'melee',
+				def = 'goo',
 				maindir = '0 0 1',
-				maxangledif = 155
+				maxangledif = 180,
+				badtargetcategory = "VTOL OBJECT"
 			}
 		}		
 	},
@@ -311,7 +308,7 @@ for f, u in pairs {
 	table.mergeInPlace(unitDefs[f], u, true)
 end
 
-local newCosts = { -- egg drop is 1/3 of this
+local newCosts = {
 	raptor_mama_ba = 36000,
 	raptor_mama_fi = 36000,
 	raptor_mama_el = 36000,
