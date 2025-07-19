@@ -1,6 +1,7 @@
 # Requirements
 
-[Docker](https://www.docker.com/products/docker-desktop/)
+- [Docker](https://www.docker.com/products/docker-desktop/)
+- [make](https://scoop.sh/scoopinstaller-dev.github.io/#/apps?q=make&id=c43ff861c0f1713336e5304d85334a29ffb86317)
 
 # Usage
 

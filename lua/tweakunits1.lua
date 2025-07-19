@@ -15,14 +15,9 @@ return {
 			[36] = 'legjam'
 		},
 		customparams = {
-			evolution_announcement = 'Legion commanders have upgraded to level 2',
-			evolution_announcement_size = 18.5,
 			evolution_target = 'legcomlvl2',
 			evolution_condition = 'timer',
-			evolution_timer = 420,
-			combatradius = 0,
-			paratrooper = true,
-			fall_damage_multiplier = 0
+			evolution_timer = 420
 		},
 		weapondefs = {
 			legcomlaser = {
@@ -101,10 +96,7 @@ return {
 		autoheal = 100,
 		health = 6700,
 		customparams = {
-			combatradius = 0,
-			evolution_timer = 600,
-			paratrooper = true,
-			fall_damage_multiplier = 0
+			evolution_timer = 600
 		},
 		buildoptions = {
 			[1] = 'cornecro',
@@ -223,34 +215,37 @@ return {
 		autoheal = 150,
 		health = 7500,
 		customparams = {
-			combatradius = 0,
-			evolution_timer = 420,
-			paratrooper = true,
-			fall_damage_multiplier = 0
+			evolution_timer = 420
 		},
-		buildoptions = {
-			[1] = 'legdeflector',
-			[2] = 'legfus',
-			[3] = 'legbombard',
-			[4] = 'legadvestore',
-			[5] = 'legmoho',
-			[6] = 'legadveconv',
-			[10] = 'legarad',
-			[11] = 'legajam',
-			[12] = 'legforti',
-			[13] = 'legacluster',
-			[14] = 'legamstor',
-			[15] = 'legflak',
-			[16] = 'legabm',
-			[17] = 'legbastion',
-			[29] = 'legdtr',
-			[32] = 'cornecro',
-			[33] = 'legdtl',
-			[37] = 'leglab',
-			[18] = '',
-			[19] = '',
-			[20] = ''
-		},
+		buildoptions = (function()
+			local buildoptions = {
+				[1] = 'legdeflector',
+				[2] = 'legfus',
+				[3] = 'legbombard',
+				[4] = 'legadvestore',
+				[5] = 'legmoho',
+				[6] = 'legadveconv',
+				[10] = 'legarad',
+				[11] = 'legajam',
+				[12] = 'legforti',
+				[13] = 'legacluster',
+				[14] = 'legamstor',
+				[15] = 'legflak',
+				[16] = 'legabm',
+				[17] = 'legbastion',
+				[29] = 'legdtr',
+				[32] = 'cornecro',
+				[33] = 'legdtl',
+				[37] = 'leglab',
+				[18] = '',
+				[19] = '',
+				[20] = ''
+			}
+			if UnitDefs.legendary_bastion and not table.contains(UnitDefs.legcomlvl3.buildoptions, 'legendary_bastion') then
+				buildoptions[18] = 'legendary_bastion'
+			end
+			return buildoptions
+		end)(),
 		weapondefs = {
 			armcomlaser = {
 				accuracy = 50,
@@ -356,50 +351,54 @@ return {
 		autoheal = 180,
 		health = 24500,
 		customparams = {
-			combatradius = 0,
-			evolution_timer = 300,
-			paratrooper = true,
-			fall_damage_multiplier = 0
+			evolution_timer = 300
 		},
-		buildoptions = {
-			[1] = 'legdeflector',
-			[2] = 'legfus',
-			[3] = 'legbombard',
-			[4] = 'legadvestore',
-			[5] = 'legmoho',
-			[6] = 'legadveconv',
-			[9] = 'legeshotgunmech',
-			[10] = 'legarad',
-			[11] = 'legajam',
-			[12] = 'legkeres',
-			[13] = 'legacluster',
-			[14] = 'legamstor',
-			[15] = 'legflak',
-			[16] = 'legabm',
-			[17] = 'legbastion',
-			[18] = 'legdtr',
-			[19] = 'legnanotct2',
-			[20] = 'legnanotct2plat',
-			[21] = 'legrwall',
-			[24] = 'leglab',
-			[28] = 'legtarg',
-			[29] = 'legsd',
-			[30] = 'legpede',
-			[31] = 'legerailtank',
-			[32] = 'legeheatraymech',
-			[33] = 'cornecro',
-			[34] = 'legafus',
-			[35] = 'leglraa',
-			[36] = 'legdtl',
-			[37] = 'legdtf',
-			[39] = 'legministarfall',
-			[48] = 'legstarfall',
-			[49] = 'leggatet3',
-			[50] = 'legperdition',
-			[51] = 'legsilo',
-			[52] = 'legsrailt4',
-			[53] = 'legelrpcmech'
-		},
+		buildoptions = (function()
+			local buildoptions = {
+				[1] = 'legdeflector',
+				[2] = 'legfus',
+				[3] = 'legbombard',
+				[4] = 'legadvestore',
+				[5] = 'legmoho',
+				[6] = 'legadveconv',
+				[9] = 'legeshotgunmech',
+				[10] = 'legarad',
+				[11] = 'legajam',
+				[12] = 'legkeres',
+				[13] = 'legacluster',
+				[14] = 'legamstor',
+				[15] = 'legflak',
+				[16] = 'legabm',
+				[17] = 'legbastion',
+				[18] = 'legendary_bastion',
+				[19] = 'legnanotct2',
+				[20] = 'legnanotct2plat',
+				[21] = 'legrwall',
+				[22] = 'legdtr',
+				[24] = 'leglab',
+				[28] = 'legtarg',
+				[29] = 'legsd',
+				[30] = 'legpede',
+				[31] = 'legerailtank',
+				[32] = 'legeheatraymech',
+				[33] = 'cornecro',
+				[34] = 'legafus',
+				[35] = 'leglraa',
+				[36] = 'legdtl',
+				[37] = 'legdtf',
+				[39] = 'legministarfall',
+				[48] = 'legstarfall',
+				[49] = 'leggatet3',
+				[50] = 'legperdition',
+				[51] = 'legsilo',
+				[52] = 'legsrailt4',
+				[53] = 'legelrpcmech'
+			}
+			if UnitDefs.legnanotct3 then
+				table.insert(buildoptions, 'legnanotct3')
+			end
+			return buildoptions
+		end)(),
 		weapondefs = {
 			armcomlaser = {
 				accuracy = 50,
@@ -504,49 +503,52 @@ return {
 		workertime = 1500,
 		autoheal = 3500,
 		health = 41900,
-		customparams = {
-			paratrooper = true,
-			fall_damage_multiplier = 0,
-		},
-		buildoptions = {
-			[1] = 'legdeflector',
-			[2] = 'legfus',
-			[3] = 'legbombard',
-			[4] = 'legadvestore',
-			[5] = 'legmoho',
-			[6] = 'legadveconv',
-			[9] = 'legeshotgunmech',
-			[10] = 'legarad',
-			[11] = 'legajam',
-			[12] = 'legkeres',
-			[13] = 'legacluster',
-			[14] = 'legamstor',
-			[15] = 'legflak',
-			[16] = 'legabm',
-			[17] = 'legbastion',
-			[18] = 'legdtr',
-			[19] = 'legnanotct2',
-			[20] = 'legnanotct2plat',
-			[21] = 'legrwall',
-			[24] = 'leglab',
-			[28] = 'legtarg',
-			[29] = 'legsd',
-			[30] = 'legpede',
-			[31] = 'legerailtank',
-			[32] = 'legeheatraymech',
-			[33] = 'cornecro',
-			[34] = 'legafus',
-			[35] = 'leglraa',
-			[36] = 'legdtl',
-			[37] = 'legdtf',
-			[39] = 'legministarfall',
-			[48] = 'legstarfall',
-			[49] = 'leggatet3',
-			[50] = 'legperdition',
-			[51] = 'legsilo',
-			[52] = 'legsrailt4',
-			[53] = 'legelrpcmech'
-		},
+		buildoptions = (function()
+			local buildoptions = {
+				[1] = 'legdeflector',
+				[2] = 'legfus',
+				[3] = 'legbombard',
+				[4] = 'legadvestore',
+				[5] = 'legmoho',
+				[6] = 'legadveconv',
+				[9] = 'legeshotgunmech',
+				[10] = 'legarad',
+				[11] = 'legajam',
+				[12] = 'legkeres',
+				[13] = 'legacluster',
+				[14] = 'legamstor',
+				[15] = 'legflak',
+				[16] = 'legabm',
+				[17] = 'legbastion',
+				[18] = 'legendary_bastion',
+				[19] = 'legnanotct2',
+				[20] = 'legnanotct2plat',
+				[21] = 'legrwall',
+				[22] = 'legdtr',
+				[24] = 'leglab',
+				[28] = 'legtarg',
+				[29] = 'legsd',
+				[30] = 'legpede',
+				[31] = 'legerailtank',
+				[32] = 'legeheatraymech',
+				[33] = 'cornecro',
+				[34] = 'legafus',
+				[35] = 'leglraa',
+				[36] = 'legdtl',
+				[37] = 'legdtf',
+				[39] = 'legministarfall',
+				[48] = 'legstarfall',
+				[49] = 'leggatet3',
+				[50] = 'legperdition',
+				[51] = 'legsilo',
+				[52] = 'legsrailt4',
+				[53] = 'legelrpcmech'
+			}
+			if UnitDefs.legnanotct3 then
+				table.insert(buildoptions, 'legnanotct3')
+			end
+			return buildoptions
+		end)(),
 		weapondefs = {
 			armcomlaser = {
 				accuracy = 50,

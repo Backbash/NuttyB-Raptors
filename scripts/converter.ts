@@ -2,6 +2,7 @@ import base64url from 'base64url'
 import path from 'path'
 import os from 'os'
 import { promises as fs } from 'fs'
+import { execSync } from 'child_process'
 const clipboardy = import('clipboardy')
 
 const luamin = require('luamin')
@@ -193,6 +194,26 @@ function extractTopComments(content: string) {
 	return commentString
 }
 
+async function optimizeAst(luaCode: string): Promise<string> {
+	try {
+		// Call the Python AST optimizer script
+		const astOptimizerPath = path.join(__dirname, 'ast_optimizer.py')
+		const optimizedCode = execSync(`python3 ${astOptimizerPath}`, {
+			input: luaCode,
+			encoding: 'utf-8',
+			timeout: 10000, // 10 second timeout
+		})
+
+		return optimizedCode.trim()
+	} catch (error) {
+		console.warn(
+			'AST optimization failed, falling back to original code:',
+			(error as Error).message,
+		)
+		return luaCode
+	}
+}
+
 async function luaFileToBase64Url(
 	srcPath: string,
 	destPath: string,
@@ -204,14 +225,19 @@ async function luaFileToBase64Url(
 
 	let minified
 	try {
+		// const optimizedContent = destPath.includes('defs')
+		// 	? await optimizeAst(content)
+		// 	: content
+		const optimizedContent = content
+
 		minified =
-			extractTopComments(content) +
+			extractTopComments(optimizedContent) +
 			(destPath.includes('units')
-				? luamin.minify(content).replace(/.*?(\{.*)/, '$1')
-				: luamin.minify(content))
+				? luamin.minify(optimizedContent).replace(/.*?(\{.*)/, '$1')
+				: luamin.minify(optimizedContent))
 	} catch (err) {
-		console.log(srcPath, 'content:', content.slice(0, 200), '...')
 		console.error(err)
+		process.exit(0)
 		throw err
 	}
 

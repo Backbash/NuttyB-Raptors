@@ -4,14 +4,9 @@
 return {
 	armcom = {
 		customparams = {
-			evolution_announcement = 'Arm Commanders upgraded',
-			evolution_announcement_size = 18.5,
 			evolution_target = 'armcomlvl2',
 			evolution_condition = 'timer',
-			evolution_timer = 420,
-			combatradius = 0,
-			paratrooper = true,
-			fall_damage_multiplier = 0
+			evolution_timer = 420
 		},
 		energymake = 100,
 		metalmake = 10,
@@ -174,15 +169,9 @@ return {
 			'armrectr'
 		},
 		customparams = {
-			evolution_announcement = 'Arm Commanders upgraded',
-			evolution_announcement_size = 18.5,
 			evolution_target = 'armcomlvl3',
 			evolution_condition = 'timer',
 			evolution_timer = 900,
-			combatradius = 0,
-			wtboostunittype = '',
-			paratrooper = true,
-			fall_damage_multiplier = 0
 		},
 		weapondefs = {
 			armcomlaser = {
@@ -297,6 +286,7 @@ return {
 			'armmoho',
 			'armuwmme',
 			'armflak',
+			'armmercury',
 			'armgate',
 			'armsd',
 			'armfort',
@@ -342,18 +332,14 @@ return {
 			'armsnipe',
 			'armvang',
 			'armrectr',
-			'armgatet3'
+			'armgatet3',
+			'legendary_pulsar',
+			'armnanotct3'
 		},
 		customparams = {
-			evolution_announcement = 'Arm Commanders upgraded',
-			evolution_announcement_size = 18.5,
 			evolution_target = 'armcomlvl4',
 			evolution_condition = 'timer',
 			evolution_timer = 420,
-			combatradius = 0,
-			wtboostunittype = '',
-			paratrooper = true,
-			fall_damage_multiplier = 0
 		},
 		weapondefs = {
 			old_armsnipe_weapon = {
@@ -478,6 +464,7 @@ return {
 			'armmoho',
 			'armuwmme',
 			'armflak',
+			'armmercury',
 			'armgate',
 			'armsd',
 			'armfort',
@@ -523,12 +510,12 @@ return {
 			'armsnipe',
 			'armvang',
 			'armrectr',
-			'armgatet3'
+			'armgatet3',
+			'legendary_pulsar',
+			'armnanotct3'
 		},
 		customparams = {
-			wtboostunittype = '',
-			paratrooper = true,
-			fall_damage_multiplier = 0
+			wtboostunittype = ''
 		},
 		weapondefs = {
 			old_armsnipe_weapon = {

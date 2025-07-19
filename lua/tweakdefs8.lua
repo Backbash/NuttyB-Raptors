@@ -145,9 +145,9 @@ for _, faction in pairs(factions) do
 
 	-- Add faction-exclusive options with lookup tables
 	local exclusiveOptions = {
-		arm = {'armamd', 'armmercury', 'armbrtha', 'armminivulc', 'armvulc', 'armanni', 'armannit3', 'armlwall'},
-		cor = {'corfmd', 'corscreamer', 'cordoomt3', 'corbuzz', 'corminibuzz', 'corint', 'cordoom', 'corhllllt', 'cormwall'},
-		leg = {'legabm', 'legstarfall', 'legministarfall', 'leglraa', 'legbastion', 'legrwall', 'leglrpc'}
+		arm = {'armamd', 'armmercury', 'armbrtha', 'armminivulc', 'armvulc', 'armanni', 'armannit3', 'armlwall', 'legendary_pulsar'},
+		cor = {'corfmd', 'corscreamer', 'cordoomt3', 'corbuzz', 'corminibuzz', 'corint', 'cordoom', 'corhllllt', 'cormwall', 'legendary_bulwark'},
+		leg = {'legabm', 'legstarfall', 'legministarfall', 'leglraa', 'legbastion', 'legrwall', 'leglrpc', 'legendary_bastion'}
 	}
 
 	for _, option in ipairs(exclusiveOptions[faction] or {}) do
