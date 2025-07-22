@@ -7,12 +7,10 @@ function UnitDef_Post(unitID, unitDef)
         oldUnitDef_Post(unitID, unitDef)
     end
 
-	for unitName, unitDef in pairs(UnitDefs) do
-		if unitDef.customparams and unitDef.customparams.subfolder == 'other/raptors' then
-			unitDef.metalcost = math.floor(unitDef.metalcost) * .33
-			unitDef.nochasecategory = "OBJECT"
-		end
-	end
+    if unitDef.customparams and unitDef.customparams.subfolder == 'other/raptors' then
+        unitDef.metalcost = math.floor(unitDef.health * 0.33)
+        unitDef.nochasecategory = "OBJECT"
+    end
 end
 
 for unitName, unitDef in pairs(UnitDefs) do
