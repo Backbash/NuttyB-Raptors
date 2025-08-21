@@ -29,3 +29,7 @@ do
 	local nBuildOptions = #unitDefs[builderName].buildoptions
 	unitDefs[builderName].buildoptions[nBuildOptions + 1] = 'legdtf'
 end
+
+for _, unitName in pairs({ 'coruwadves', 'legadvestore' }) do
+	table.mergeInPlace(unitDefs[unitName], { footprintx = 4, footprintz = 4 })
+end
