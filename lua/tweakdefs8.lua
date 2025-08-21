@@ -199,7 +199,7 @@ for _, faction in pairs(factions) do
 		{
 			blocking = false,
 			canassist = true,
-			cruisealtitude = 3000,
+			cruisealtitude = 2000,
 			builddistance = 1750,
 			buildtime = 140000,
 			energycost = 200000,
@@ -211,7 +211,7 @@ for _, faction in pairs(factions) do
 			maxthisunit = 1,
 			metalcost = 13400,
 			speed = 25,
-			category = "OBJECT",
+			category = "SPACENOTOBJECT",
 			terraformspeed = 3000,
 			turninplaceanglelimit = 1.890,
 			turnrate = 1240,
