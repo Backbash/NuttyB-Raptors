@@ -147,7 +147,7 @@ for _, faction in pairs(factions) do
 	local exclusiveOptions = {
 		arm = {'armamd', 'armmercury', 'armbrtha', 'armminivulc', 'armvulc', 'armanni', 'armannit3', 'armlwall', 'legendary_pulsar'},
 		cor = {'corfmd', 'corscreamer', 'cordoomt3', 'corbuzz', 'corminibuzz', 'corint', 'cordoom', 'corhllllt', 'cormwall', 'legendary_bulwark'},
-		leg = {'legabm', 'legstarfall', 'legministarfall', 'leglraa', 'legbastion', 'legrwall', 'leglrpc', 'legendary_bastion'}
+		leg = {'legabm', 'legstarfall', 'legministarfall', 'leglraa', 'legbastion', 'legrwall', 'leglrpc', 'legendary_bastion', 'legapopupdef', 'legdtf'}
 	}
 
 	for _, option in ipairs(exclusiveOptions[faction] or {}) do

@@ -23,3 +23,9 @@ for _, builderName in pairs(cons) do
 	unitDefs[builderName].buildoptions[nBuildOptions + 1] = faction .. 'afust3'
 	unitDefs[builderName].buildoptions[nBuildOptions + 2] = faction == 'leg' and 'legadveconvt3' or faction .. 'mmkrt3'
 end
+
+do
+	local builderName = 'legck'
+	local nBuildOptions = #unitDefs[builderName].buildoptions
+	unitDefs[builderName].buildoptions[nBuildOptions + 1] = 'legdtf'
+end
