@@ -12,7 +12,8 @@ return {
 			'legdtl',
 			'legdtf',
 			'legdtr',
-			'legjam'
+			'legjam',
+			'legwin'
 		},
 		customparams = {
 			evolution_target = 'legcomlvl2',
@@ -235,6 +236,7 @@ return {
 			'legabm',
 			'legbastion',
 			'legdtr',
+			'legdtf',
 			'legrezbot',
 			'legdtl',
 			'leglab',
