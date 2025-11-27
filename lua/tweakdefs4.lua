@@ -1,4 +1,4 @@
---Mini Bosses v2e
+--Mini Bosses v2g
 -- Authors: RCore
 -- docs.google.com/spreadsheets/d/1QSVsuAAMhBrhiZdTihVfSCwPzbbZWDLCtXWP23CU0ko
 local unitDefs, tableMerge, tableCopy, raptor_matriarch_basic, customfusionexplo, spring = UnitDefs or {}, table.merge, table.copy, 'raptor_matriarch_basic', 'customfusionexplo', Spring
@@ -32,8 +32,16 @@ end
 
 local mqNumQueens = spring.GetModOptions().raptor_queen_count or 1
 local mqDoomAngerScale = 1
-if nbQhpMult > 1.3 then mqDoomAngerScale = math.min(10, nbQhpMult / 1.3 * 0.9) end
-local mqDoomAnger = math.ceil(mqDoomAngerScale * (10 * (1.06 ^ math.max(0, mqNumQueens - 8))))
+mqDoomAngerScale = math.min(10, nbQhpMult / 1.3 * 0.9)
+
+-- Compact logic for hybrid exponential/linear growth
+local queenThreshold = 20
+local exponentialPart = 10 * (1.06 ^ math.max(0, math.min(mqNumQueens, queenThreshold) - 8))
+local x = math.max(0, mqNumQueens - queenThreshold)
+local linearPart = (x <= 80) and (0.6 * x - x*x/270) or (24.3 + (x - 80) * 0.15)
+local baseQueenAnger = exponentialPart + linearPart
+
+local mqDoomAnger = math.ceil(mqDoomAngerScale * baseQueenAnger)
 local mqAngerBoss = mqTimeMult * 100 + mqDoomAnger
 local maxDoombringers = math.max(3, scaledMax(math.floor((21 * mqNumQueens + 36) / 19)))
 
