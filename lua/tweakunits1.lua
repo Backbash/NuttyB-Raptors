@@ -3,6 +3,8 @@
 -- docs.google.com/spreadsheets/d/1QSVsuAAMhBrhiZdTihVfSCwPzbbZWDLCtXWP23CU0ko
 return {
 	legcom = {
+		footprintx = 2,
+		footprintz = 2,
 		energymake = 50,
 		metalmake = 5,
 		health = 6000,
@@ -91,6 +93,8 @@ return {
 		}
 	},
 	legcomlvl2 = {
+		footprintx = 2,
+		footprintz = 2,
 		energymake = 150,
 		metalmake = 15,
 		speed = 57.5,
@@ -210,6 +214,8 @@ return {
 		}
 	},
 	legcomlvl3 = {
+		footprintx = 2,
+		footprintz = 2,
 		energymake = 1280,
 		metalmake = 40,
 		speed = 70.5,
@@ -342,6 +348,8 @@ return {
 		}
 	},
 	legcomlvl4 = {
+		footprintx = 2,
+		footprintz = 2,
 		energymake = 1980,
 		metalmake = 46,
 		speed = 88.5,
@@ -492,6 +500,8 @@ return {
 		}
 	},
 	legcomlvl5 = {
+		footprintx = 2,
+		footprintz = 2,
 		energymake = 2280,
 		metalmake = 64,
 		speed = 100,
@@ -654,7 +664,7 @@ return {
 				movingaccuracy = 600,
 				name = "Raptor Boomer",
 				noselfdamage = true,
-				proximitypriority = {},
+				proximitypriority = nil,
 				range = 700,
 				reloadtime = 1,
 				smoketrail = true,
