@@ -197,7 +197,7 @@ return {
 				sprayangle = 256,
 				turret = true,
 				stockpiletime = 12,
-				proximitypriority = '',
+				proximitypriority = nil,
 				damage = {
 					default = 1,
 					shields = 100
@@ -383,7 +383,7 @@ return {
 				rgbcolor = '1 0.25 0.1',
 				range = 700,
 				size = 2,
-				proximitypriority = {},
+				proximitypriority = nil,
 				impactonly = 1,
 				trajectoryheight = 1,
 				targetmoveerror = 0.2,
